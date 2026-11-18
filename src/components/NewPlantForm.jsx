@@ -9,7 +9,7 @@ function NewPlantForm({ onAddPlant }) {
     const newPlant = {
       name: formData.get("name"),
       image: formData.get("image"),
-      price: Number(formData.get("price")),
+      price: formData.get("price"),
     };
 
     fetch("http://localhost:6001/plants", {
@@ -19,25 +19,41 @@ function NewPlantForm({ onAddPlant }) {
       },
       body: JSON.stringify(newPlant),
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to add plant");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((plant) => {
         onAddPlant(plant);
         event.target.reset();
       })
       .catch((error) => console.error("Error adding plant:", error));
-  }  
+  }
+
   return (
     <div className="new-plant-form">
       <h2>New Plant</h2>
+
       <form onSubmit={handleSubmit}>
-        <input type="text" name="name" placeholder="Plant name" />
-        <input type="text" name="image" placeholder="Image URL" />
-        <input type="number" name="price" step="0.01" placeholder="Price" />
+        <input
+          type="text"
+          name="name"
+          placeholder="Plant name"
+          required
+        />
+
+        <input
+          type="text"
+          name="image"
+          placeholder="Image URL"
+          required
+        />
+
+        <input
+          type="number"
+          name="price"
+          step="0.01"
+          placeholder="Price"
+          required
+        />
+
         <button type="submit">Add Plant</button>
       </form>
     </div>
